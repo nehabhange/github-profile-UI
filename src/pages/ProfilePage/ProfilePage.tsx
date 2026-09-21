@@ -5,6 +5,7 @@ import ProfileTabs from '../../components/ProfileTabs/ProfileTabs'
 import { PROFILE_TABS } from '../../components/ProfileTabs/tabs'
 import type { ProfileTab } from '../../components/ProfileTabs/tabs'
 import EmptyState from '../../components/EmptyState/EmptyState'
+import ProfileSidebar from '../../components/ProfileSidebar/ProfileSidebar'
 import { useGitHubProfile } from '../../hooks/useGitHubProfile'
 import styles from './ProfilePage.module.css'
 
@@ -29,7 +30,7 @@ export default function ProfilePage() {
 
       <main className={styles.layout}>
         <aside className={styles.sidebar}>
-          <ProfileSidebarPlaceholder profile={profile} />
+          <ProfileSidebarSlot profile={profile} />
         </aside>
 
         <section
@@ -53,12 +54,8 @@ export default function ProfilePage() {
   )
 }
 
-/**
- * Stand-in for the real ProfileSidebar (Phase 4). Demonstrates the
- * profile API's loading/error/success states until the full sidebar UI
- * lands.
- */
-function ProfileSidebarPlaceholder({ profile }: { profile: ReturnType<typeof useGitHubProfile> }) {
+/** Renders the sidebar's loading/error/success states around the real ProfileSidebar. */
+function ProfileSidebarSlot({ profile }: { profile: ReturnType<typeof useGitHubProfile> }) {
   if (profile.status === 'loading') {
     return <div className={styles.placeholder}>Loading profile…</div>
   }
@@ -69,11 +66,7 @@ function ProfileSidebarPlaceholder({ profile }: { profile: ReturnType<typeof use
     )
   }
 
-  return (
-    <div className={styles.placeholder}>
-      Loaded: {profile.data.name ?? profile.data.login} (@{profile.data.login})
-    </div>
-  )
+  return <ProfileSidebar user={profile.data} />
 }
 
 function TabBlankslate({ tab }: { tab: ProfileTab }) {
