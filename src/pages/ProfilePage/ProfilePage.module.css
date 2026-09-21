@@ -20,11 +20,7 @@
   min-width: 0;
 }
 
-.footer {
-  border-top: 1px solid var(--color-border-default);
-}
-
-/* Temporary Phase 1 placeholder blocks */
+/* Used only for the sidebar's transient "Loading profile…" state. */
 .placeholder {
   padding: 16px;
   color: var(--color-fg-muted);

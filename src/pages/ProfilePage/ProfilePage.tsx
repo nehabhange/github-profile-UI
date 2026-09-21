@@ -9,6 +9,7 @@ import ProfileSidebar from '../../components/ProfileSidebar/ProfileSidebar'
 import PopularRepositories from '../../components/PopularRepositories/PopularRepositories'
 import ContributionGraphSkeleton from '../../components/ContributionGraph/ContributionGraphSkeleton'
 import ContributionActivity from '../../components/ContributionActivity/ContributionActivity'
+import Footer from '../../components/Footer/Footer'
 import { useGitHubProfile } from '../../hooks/useGitHubProfile'
 import styles from './ProfilePage.module.css'
 
@@ -61,9 +62,7 @@ export default function ProfilePage() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <div className={styles.placeholder}>Footer</div>
-      </footer>
+      <Footer />
     </div>
   )
 }
@@ -90,7 +89,7 @@ function TabBlankslate({ tab }: { tab: ProfileTab }) {
   return (
     <EmptyState
       icon={definition.icon}
-      title={`${USERNAME} doesn’t have any ${definition.label.toLowerCase()} yet.`}
+      title={`${definition.label} isn’t part of this build`}
       description="This tab is intentionally minimal — only the Overview tab is in scope for this assignment."
     />
   )
