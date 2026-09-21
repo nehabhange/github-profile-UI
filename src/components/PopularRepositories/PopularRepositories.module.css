@@ -1,0 +1,50 @@
+.section {
+  min-width: 0;
+}
+
+.heading {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.skeletonCard {
+  height: 108px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--border-radius);
+  background: linear-gradient(
+    100deg,
+    var(--color-canvas-subtle) 30%,
+    var(--color-canvas-default) 50%,
+    var(--color-canvas-subtle) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonCard {
+    animation: none;
+  }
+}

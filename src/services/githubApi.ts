@@ -1,4 +1,4 @@
-import { GitHubApiError, type GitHubUser } from '../types/github'
+import { GitHubApiError, type GitHubRepository, type GitHubUser } from '../types/github'
 
 const API_BASE = 'https://api.github.com'
 
@@ -49,4 +49,14 @@ async function describeError(response: Response): Promise<string> {
 
 export function getUser(username: string, signal?: AbortSignal): Promise<GitHubUser> {
   return request<GitHubUser>(`/users/${encodeURIComponent(username)}`, signal)
+}
+
+export function getRepositories(
+  username: string,
+  signal?: AbortSignal,
+): Promise<GitHubRepository[]> {
+  return request<GitHubRepository[]>(
+    `/users/${encodeURIComponent(username)}/repos?per_page=100&sort=updated`,
+    signal,
+  )
 }

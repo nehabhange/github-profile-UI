@@ -6,6 +6,7 @@ import { PROFILE_TABS } from '../../components/ProfileTabs/tabs'
 import type { ProfileTab } from '../../components/ProfileTabs/tabs'
 import EmptyState from '../../components/EmptyState/EmptyState'
 import ProfileSidebar from '../../components/ProfileSidebar/ProfileSidebar'
+import PopularRepositories from '../../components/PopularRepositories/PopularRepositories'
 import { useGitHubProfile } from '../../hooks/useGitHubProfile'
 import styles from './ProfilePage.module.css'
 
@@ -40,7 +41,7 @@ export default function ProfilePage() {
           aria-labelledby={`tab-${activeTab}`}
         >
           {activeTab === 'overview' ? (
-            <div className={styles.placeholder}>Main content</div>
+            <PopularRepositories username={USERNAME} />
           ) : (
             <TabBlankslate tab={activeTab} />
           )}

@@ -24,6 +24,25 @@ export interface GitHubUser {
 }
 
 /**
+ * Shape of one entry from `GET /users/:username/repos`.
+ *
+ * See: https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user
+ */
+export interface GitHubRepository {
+  id: number
+  name: string
+  full_name: string
+  html_url: string
+  description: string | null
+  fork: boolean
+  private: boolean
+  language: string | null
+  stargazers_count: number
+  forks_count: number
+  updated_at: string
+}
+
+/**
  * A structured API error so components can branch on `status` (e.g. render
  * a "rate limited" message for 403, "not found" for 404) instead of
  * pattern-matching a generic Error message.
