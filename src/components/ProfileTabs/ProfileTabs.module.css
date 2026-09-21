@@ -1,0 +1,95 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--color-canvas-default);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: 0 32px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  line-height: 30px;
+  color: var(--color-fg-default);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+/* Hover pill is drawn behind the label so the underline stays flush. */
+.tab::before {
+  content: '';
+  position: absolute;
+  inset: 4px 0;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  z-index: -1;
+}
+
+.tab:hover::before {
+  background-color: rgba(208, 215, 222, 0.32);
+}
+
+.tab:focus-visible {
+  outline-offset: -2px;
+}
+
+.icon {
+  color: var(--color-fg-muted);
+}
+
+.counter {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  text-align: center;
+  color: var(--color-fg-default);
+  background-color: rgba(175, 184, 193, 0.2);
+  border-radius: 10px;
+}
+
+.active {
+  font-weight: 600;
+  border-bottom-color: var(--color-primer-border-active);
+}
+
+.active .icon {
+  color: var(--color-fg-default);
+}
+
+@media (max-width: 1012px) {
+  .tabs {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    padding: 0 8px;
+  }
+
+  .tab {
+    padding: 8px 12px;
+  }
+}
