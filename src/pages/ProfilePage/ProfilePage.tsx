@@ -8,6 +8,7 @@ import EmptyState from '../../components/EmptyState/EmptyState'
 import ProfileSidebar from '../../components/ProfileSidebar/ProfileSidebar'
 import PopularRepositories from '../../components/PopularRepositories/PopularRepositories'
 import ContributionGraphSkeleton from '../../components/ContributionGraph/ContributionGraphSkeleton'
+import ContributionActivity from '../../components/ContributionActivity/ContributionActivity'
 import { useGitHubProfile } from '../../hooks/useGitHubProfile'
 import styles from './ProfilePage.module.css'
 
@@ -52,6 +53,7 @@ export default function ProfilePage() {
               <Suspense fallback={<ContributionGraphSkeleton />}>
                 <ContributionGraph username={USERNAME} />
               </Suspense>
+              <ContributionActivity />
             </>
           ) : (
             <TabBlankslate tab={activeTab} />

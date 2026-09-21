@@ -38,3 +38,65 @@ export interface Organization {
 export const MOCK_ORGANIZATIONS: Organization[] = [
   { id: 'uptimeai', name: 'UptimeAI', url: 'https://github.com/uptimeai', initial: 'U', color: '#0969da' },
 ]
+
+/**
+ * GitHub's "Contribution activity" timeline is assembled from private
+ * event data (commit contents, PR/review metadata) with no public,
+ * unauthenticated equivalent. Mocked per the assignment; `monthsAgo` is
+ * relative to today so the timeline always reads as current instead of
+ * drifting to a fixed past date.
+ */
+export type ActivityType = 'commit' | 'pull-request' | 'review' | 'repository'
+
+export interface ActivityEvent {
+  id: string
+  type: ActivityType
+  summary: string
+  repositories: string[]
+  monthsAgo: number
+}
+
+export const MOCK_ACTIVITY: ActivityEvent[] = [
+  {
+    id: 'act-1',
+    type: 'pull-request',
+    summary: 'Opened 3 pull requests in 2 repositories',
+    repositories: ['node-opcua-1', 'kafkajs'],
+    monthsAgo: 0,
+  },
+  {
+    id: 'act-2',
+    type: 'commit',
+    summary: 'Created 14 commits in 3 repositories',
+    repositories: ['TitaniumAS.Opc.Client', 'Catch2', 'node-opcua-1'],
+    monthsAgo: 0,
+  },
+  {
+    id: 'act-3',
+    type: 'repository',
+    summary: 'Created 1 repository',
+    repositories: ['gitignore'],
+    monthsAgo: 1,
+  },
+  {
+    id: 'act-4',
+    type: 'review',
+    summary: 'Reviewed 2 pull requests in 1 repository',
+    repositories: ['kafkajs'],
+    monthsAgo: 1,
+  },
+  {
+    id: 'act-5',
+    type: 'commit',
+    summary: 'Created 8 commits in 2 repositories',
+    repositories: ['Catch2', 'flutter_login_ui'],
+    monthsAgo: 2,
+  },
+  {
+    id: 'act-6',
+    type: 'pull-request',
+    summary: 'Opened 1 pull request in 1 repository',
+    repositories: ['Complete-Python-3-Bootcamp'],
+    monthsAgo: 3,
+  },
+]
