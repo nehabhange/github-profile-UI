@@ -14,3 +14,15 @@ export function normalizeUrl(url: string): string {
 export function displayUrl(url: string): string {
   return url.replace(/^https?:\/\//i, '').replace(/\/$/, '')
 }
+
+/**
+ * Formats a "YYYY-MM-DD" string as "Mar 14, 2026" for chart tooltips.
+ * Parses the parts manually rather than `new Date(isoDate)`, which treats a
+ * bare date string as UTC midnight and can display a day off in timezones
+ * ahead of UTC.
+ */
+export function formatShortDate(isoDate: string): string {
+  const [year, month, day] = isoDate.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}

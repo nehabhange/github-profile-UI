@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
 import Header from '../../components/Header/Header'
 import ProfileTabs from '../../components/ProfileTabs/ProfileTabs'
@@ -7,8 +7,14 @@ import type { ProfileTab } from '../../components/ProfileTabs/tabs'
 import EmptyState from '../../components/EmptyState/EmptyState'
 import ProfileSidebar from '../../components/ProfileSidebar/ProfileSidebar'
 import PopularRepositories from '../../components/PopularRepositories/PopularRepositories'
+import ContributionGraphSkeleton from '../../components/ContributionGraph/ContributionGraphSkeleton'
 import { useGitHubProfile } from '../../hooks/useGitHubProfile'
 import styles from './ProfilePage.module.css'
+
+// ECharts pulls in a sizeable chunk (~650KB) — load it only when the
+// Overview tab actually needs to render the contribution graph, instead of
+// bundling it into the initial page load.
+const ContributionGraph = lazy(() => import('../../components/ContributionGraph/ContributionGraph'))
 
 const USERNAME = 'shreeramk'
 
@@ -41,7 +47,12 @@ export default function ProfilePage() {
           aria-labelledby={`tab-${activeTab}`}
         >
           {activeTab === 'overview' ? (
-            <PopularRepositories username={USERNAME} />
+            <>
+              <PopularRepositories username={USERNAME} />
+              <Suspense fallback={<ContributionGraphSkeleton />}>
+                <ContributionGraph username={USERNAME} />
+              </Suspense>
+            </>
           ) : (
             <TabBlankslate tab={activeTab} />
           )}
