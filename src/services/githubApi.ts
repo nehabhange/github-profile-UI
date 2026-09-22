@@ -29,14 +29,23 @@ const cache = new Map<string, { promise: Promise<unknown>; expiresAt: number }>(
  * Thin fetch wrapper around the GitHub REST API. Presentational components
  * never call `fetch` directly — they go through hooks in `src/hooks`, which
  * in turn go through this service.
+ *
+ * Note on `signal`: a cache entry can be shared by multiple independent
+ * callers (see the cache doc comment above). It is deliberately NOT wired
+ * into the underlying `fetch()`, because an `AbortSignal` belongs to one
+ * caller's lifecycle — if caller A unmounts and aborts while caller B is
+ * still waiting on that same shared promise, tying the fetch to A's signal
+ * would cancel B's data too. `signal` stays part of this function's
+ * contract (callers still pass it, and hooks still use it to ignore stale
+ * results after unmount), it just isn't forwarded to the network call.
  */
-function request<T>(path: string, signal?: AbortSignal): Promise<T> {
+function request<T>(path: string, _signal?: AbortSignal): Promise<T> {
   const cached = cache.get(path)
   if (cached && cached.expiresAt > Date.now()) {
     return cached.promise as Promise<T>
   }
 
-  const promise = performRequest<T>(path, signal)
+  const promise = performRequest<T>(path)
   // Cache the in-flight promise immediately (not just the resolved value)
   // so concurrent callers within the same tick share one fetch.
   cache.set(path, { promise, expiresAt: Date.now() + CACHE_TTL_MS })
@@ -49,9 +58,8 @@ function request<T>(path: string, signal?: AbortSignal): Promise<T> {
   return promise
 }
 
-async function performRequest<T>(path: string, signal?: AbortSignal): Promise<T> {
+async function performRequest<T>(path: string): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, {
-    signal,
     headers: {
       Accept: 'application/vnd.github+json',
     },

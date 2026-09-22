@@ -11,16 +11,20 @@ interface ProfileSidebarProps {
 export default function ProfileSidebar({ user }: ProfileSidebarProps) {
   return (
     <div className={styles.sidebar}>
-      <img
-        src={user.avatar_url}
-        alt={`${user.login}'s avatar`}
-        className={styles.avatar}
-        width={296}
-        height={296}
-      />
+      <div className={styles.identity}>
+        <img
+          src={user.avatar_url}
+          alt={`${user.login}'s avatar`}
+          className={styles.avatar}
+          width={296}
+          height={296}
+        />
 
-      <h1 className={styles.name}>{user.name ?? user.login}</h1>
-      <p className={styles.username}>{user.login}</p>
+        <div className={styles.nameBlock}>
+          <h1 className={styles.name}>{user.name ?? user.login}</h1>
+          <p className={styles.username}>{user.login}</p>
+        </div>
+      </div>
 
       {user.bio && <p className={styles.bio}>{user.bio}</p>}
 
@@ -97,12 +101,16 @@ export default function ProfileSidebar({ user }: ProfileSidebarProps) {
           Achievements
         </h2>
         <ul className={styles.achievements}>
-          {MOCK_ACHIEVEMENTS.map(({ id, label, icon: Icon, color }) => (
+          {MOCK_ACHIEVEMENTS.map(({ id, label, imageUrl, tierCount }) => (
             <li key={id} title={label}>
-              <span className={styles.achievementBadge} style={{ backgroundColor: color }}>
-                <Icon size={18} color="#ffffff" aria-hidden />
-              </span>
-              <span className={styles.srOnly}>{label}</span>
+              <a
+                href={`${user.html_url}?achievement=${id}&tab=achievements`}
+                className={styles.achievementBadge}
+                aria-label={`${label}${tierCount ? `, tier ${tierCount}` : ''}`}
+              >
+                <img src={imageUrl} alt="" width={64} height={64} />
+                {tierCount && <span className={styles.achievementTier}>×{tierCount}</span>}
+              </a>
             </li>
           ))}
         </ul>

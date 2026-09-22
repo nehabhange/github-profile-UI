@@ -43,7 +43,11 @@
 @media (max-width: 768px) {
   .inner {
     padding: 24px 16px;
-    flex-direction: column;
-    text-align: center;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .links {
+    justify-content: flex-start;
   }
 }

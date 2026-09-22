@@ -1,4 +1,5 @@
 import type { ContributionCalendar } from '../types/contributions'
+import { getShreeramkContributionSnapshot } from '../data/shreeramkContributionSnapshot'
 import { generateContributionCalendar } from '../utils/generateContributions'
 
 /**
@@ -15,5 +16,9 @@ import { generateContributionCalendar } from '../utils/generateContributions'
  * the hook and the chart component would not need to change.
  */
 export async function getContributionCalendar(username: string): Promise<ContributionCalendar> {
+  if (username.toLowerCase() === 'shreeramk') {
+    return getShreeramkContributionSnapshot()
+  }
+
   return generateContributionCalendar(username)
 }

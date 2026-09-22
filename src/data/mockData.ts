@@ -1,24 +1,31 @@
-import type { LucideIcon } from 'lucide-react'
-import { Award, Rocket, Sparkles, Users2 } from 'lucide-react'
-
 /**
- * GitHub's profile "Achievements" section is populated from private,
- * account-level activity (pull request counts, streaks, etc.) that has no
- * public API. The assignment explicitly allows mock data here — this is a
- * representative, not literal, set of badges.
+ * GitHub does not expose achievements through its public REST API. These are
+ * the badges displayed on the supplied @shreeramk profile reference.
  */
 export interface Achievement {
   id: string
   label: string
-  icon: LucideIcon
-  color: string
+  imageUrl: string
+  tierCount?: number
 }
 
 export const MOCK_ACHIEVEMENTS: Achievement[] = [
-  { id: 'pull-shark', label: 'Pull Shark', icon: Sparkles, color: '#218bff' },
-  { id: 'pair-extraordinaire', label: 'Pair Extraordinaire', icon: Users2, color: '#8250df' },
-  { id: 'quickdraw', label: 'Quickdraw', icon: Rocket, color: '#bf3989' },
-  { id: 'starstruck', label: 'Starstruck', icon: Award, color: '#9a6700' },
+  {
+    id: 'quickdraw',
+    label: 'Quickdraw',
+    imageUrl: 'https://github.githubassets.com/assets/quickdraw-default-39c6aec8ff89.png',
+  },
+  {
+    id: 'yolo',
+    label: 'YOLO',
+    imageUrl: 'https://github.githubassets.com/assets/yolo-default-be0bbff04951.png',
+  },
+  {
+    id: 'pull-shark',
+    label: 'Pull Shark',
+    imageUrl: 'https://github.githubassets.com/assets/pull-shark-gold-90985540b385.png',
+    tierCount: 4,
+  },
 ]
 
 /**

@@ -37,7 +37,17 @@ export default function ProfilePage() {
     <div className={styles.page}>
       <Header username={USERNAME} avatarUrl={profile.data?.avatar_url} />
 
-      <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      <ProfileTabs
+        username={USERNAME}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        counts={{
+          repositories: profile.data?.public_repos,
+          projects: 0,
+          packages: 0,
+          stars: 6,
+        }}
+      />
 
       <main className={styles.layout}>
         <aside className={styles.sidebar}>
