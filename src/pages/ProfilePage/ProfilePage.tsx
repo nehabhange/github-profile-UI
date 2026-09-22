@@ -1,12 +1,24 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
 import Header from '../../components/Header/Header'
 import ProfileTabs from '../../components/ProfileTabs/ProfileTabs'
 import { PROFILE_TABS } from '../../components/ProfileTabs/tabs'
 import type { ProfileTab } from '../../components/ProfileTabs/tabs'
 import EmptyState from '../../components/EmptyState/EmptyState'
+import ProfileSidebar from '../../components/ProfileSidebar/ProfileSidebar'
+import PopularRepositories from '../../components/PopularRepositories/PopularRepositories'
+import ContributionGraphSkeleton from '../../components/ContributionGraph/ContributionGraphSkeleton'
+import ContributionActivity from '../../components/ContributionActivity/ContributionActivity'
+import ActivityOverviewSkeleton from '../../components/ActivityOverview/ActivityOverviewSkeleton'
+import Footer from '../../components/Footer/Footer'
 import { useGitHubProfile } from '../../hooks/useGitHubProfile'
 import styles from './ProfilePage.module.css'
+
+// ECharts pulls in a sizeable chunk (~650KB) — load it only when the
+// Overview tab actually needs to render a chart, instead of bundling it
+// into the initial page load.
+const ContributionGraph = lazy(() => import('../../components/ContributionGraph/ContributionGraph'))
+const ActivityOverview = lazy(() => import('../../components/ActivityOverview/ActivityOverview'))
 
 const USERNAME = 'shreeramk'
 
@@ -25,11 +37,21 @@ export default function ProfilePage() {
     <div className={styles.page}>
       <Header username={USERNAME} avatarUrl={profile.data?.avatar_url} />
 
-      <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      <ProfileTabs
+        username={USERNAME}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        counts={{
+          repositories: profile.data?.public_repos,
+          projects: 0,
+          packages: 0,
+          stars: 6,
+        }}
+      />
 
       <main className={styles.layout}>
         <aside className={styles.sidebar}>
-          <ProfileSidebarPlaceholder profile={profile} />
+          <ProfileSidebarSlot profile={profile} />
         </aside>
 
         <section
@@ -39,26 +61,29 @@ export default function ProfilePage() {
           aria-labelledby={`tab-${activeTab}`}
         >
           {activeTab === 'overview' ? (
-            <div className={styles.placeholder}>Main content</div>
+            <>
+              <PopularRepositories username={USERNAME} />
+              <Suspense fallback={<ContributionGraphSkeleton />}>
+                <ContributionGraph username={USERNAME} />
+              </Suspense>
+              <Suspense fallback={<ActivityOverviewSkeleton />}>
+                <ActivityOverview username={USERNAME} />
+              </Suspense>
+              <ContributionActivity />
+            </>
           ) : (
             <TabBlankslate tab={activeTab} />
           )}
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <div className={styles.placeholder}>Footer</div>
-      </footer>
+      <Footer />
     </div>
   )
 }
 
-/**
- * Stand-in for the real ProfileSidebar (Phase 4). Demonstrates the
- * profile API's loading/error/success states until the full sidebar UI
- * lands.
- */
-function ProfileSidebarPlaceholder({ profile }: { profile: ReturnType<typeof useGitHubProfile> }) {
+/** Renders the sidebar's loading/error/success states around the real ProfileSidebar. */
+function ProfileSidebarSlot({ profile }: { profile: ReturnType<typeof useGitHubProfile> }) {
   if (profile.status === 'loading') {
     return <div className={styles.placeholder}>Loading profile…</div>
   }
@@ -69,11 +94,7 @@ function ProfileSidebarPlaceholder({ profile }: { profile: ReturnType<typeof use
     )
   }
 
-  return (
-    <div className={styles.placeholder}>
-      Loaded: {profile.data.name ?? profile.data.login} (@{profile.data.login})
-    </div>
-  )
+  return <ProfileSidebar user={profile.data} />
 }
 
 function TabBlankslate({ tab }: { tab: ProfileTab }) {
@@ -83,7 +104,7 @@ function TabBlankslate({ tab }: { tab: ProfileTab }) {
   return (
     <EmptyState
       icon={definition.icon}
-      title={`${USERNAME} doesn’t have any ${definition.label.toLowerCase()} yet.`}
+      title={`${definition.label} isn’t part of this build`}
       description="This tab is intentionally minimal — only the Overview tab is in scope for this assignment."
     />
   )

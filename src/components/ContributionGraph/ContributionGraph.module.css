@@ -1,0 +1,98 @@
+.section {
+  min-width: 0;
+  margin-top: 24px;
+}
+
+.heading {
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.scrollArea {
+  overflow-x: auto;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--border-radius);
+  padding: 8px 6px 0;
+}
+
+.chart {
+  height: 140px;
+}
+
+.skeleton {
+  height: 172px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--border-radius);
+  background: linear-gradient(
+    100deg,
+    var(--color-canvas-subtle) 30%,
+    var(--color-canvas-default) 50%,
+    var(--color-canvas-subtle) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.helpLink {
+  color: var(--color-fg-muted);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  color: var(--color-fg-muted);
+}
+
+.swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+.level0 {
+  background-color: var(--color-calendar-graph-day-bg);
+}
+
+.level1 {
+  background-color: var(--color-calendar-graph-day-L1-bg);
+}
+
+.level2 {
+  background-color: var(--color-calendar-graph-day-L2-bg);
+}
+
+.level3 {
+  background-color: var(--color-calendar-graph-day-L3-bg);
+}
+
+.level4 {
+  background-color: var(--color-calendar-graph-day-L4-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

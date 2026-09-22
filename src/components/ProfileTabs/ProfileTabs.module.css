@@ -7,6 +7,7 @@
 }
 
 .tabs {
+  position: relative;
   display: flex;
   gap: 8px;
   max-width: var(--layout-max-width);
@@ -78,6 +79,10 @@
   color: var(--color-fg-default);
 }
 
+.moreMenu {
+  display: none;
+}
+
 @media (max-width: 1012px) {
   .tabs {
     padding: 0 16px;
@@ -86,10 +91,64 @@
 
 @media (max-width: 768px) {
   .tabs {
-    padding: 0 8px;
+    gap: 0;
+    padding: 0 16px;
+    overflow: visible;
   }
 
   .tab {
     padding: 8px 12px;
+  }
+
+  .icon,
+  .externalTab {
+    display: none;
+  }
+
+  .moreMenu {
+    display: block;
+    margin-left: auto;
+  }
+
+  .moreTrigger {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 12px;
+    color: var(--color-fg-default);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .moreTrigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .morePanel {
+    position: absolute;
+    top: calc(100% - 4px);
+    right: 16px;
+    z-index: 20;
+    min-width: 176px;
+    padding: 4px;
+    background: var(--color-canvas-default);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 24px rgb(140 149 159 / 20%);
+  }
+
+  .moreItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    color: var(--color-fg-default);
+    border-radius: 4px;
+  }
+
+  .moreItem:hover {
+    color: var(--color-fg-default);
+    text-decoration: none;
+    background: var(--color-canvas-subtle);
   }
 }
