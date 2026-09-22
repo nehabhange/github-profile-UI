@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import type { LucideIcon } from 'lucide-react'
-import { FolderGit2, GitCommitHorizontal, GitPullRequest, Eye } from 'lucide-react'
-import { MOCK_ACTIVITY, type ActivityEvent, type ActivityType } from '../../data/mockData'
+import { FolderGit2, GitCommitHorizontal, GitPullRequest, Eye, Lock } from 'lucide-react'
+import { MOCK_ACTIVITY, MOCK_ACTIVITY_MORE, type ActivityEvent, type ActivityType } from '../../data/mockData'
 import { groupActivityByMonth } from '../../utils/activity'
+import { currentMonthDateRange } from '../../utils/format'
 import styles from './ContributionActivity.module.css'
 
 const TYPE_ICON: Record<ActivityType, LucideIcon> = {
@@ -9,6 +11,7 @@ const TYPE_ICON: Record<ActivityType, LucideIcon> = {
   'pull-request': GitPullRequest,
   review: Eye,
   repository: FolderGit2,
+  private: Lock,
 }
 
 const TYPE_COLOR: Record<ActivityType, string> = {
@@ -16,10 +19,13 @@ const TYPE_COLOR: Record<ActivityType, string> = {
   'pull-request': '#8250df',
   review: '#0969da',
   repository: '#9a6700',
+  private: '#656d76',
 }
 
 export default function ContributionActivity() {
-  const monthGroups = groupActivityByMonth(MOCK_ACTIVITY)
+  const [showMore, setShowMore] = useState(false)
+  const events = showMore ? [...MOCK_ACTIVITY, ...MOCK_ACTIVITY_MORE] : MOCK_ACTIVITY
+  const monthGroups = groupActivityByMonth(events)
 
   return (
     <section aria-labelledby="contribution-activity-heading" className={styles.section}>
@@ -38,12 +44,35 @@ export default function ContributionActivity() {
           </ul>
         </div>
       ))}
+
+      {!showMore && (
+        <button type="button" className={styles.showMoreButton} onClick={() => setShowMore(true)}>
+          Show more activity
+        </button>
+      )}
     </section>
   )
 }
 
 function ActivityItem({ event }: { event: ActivityEvent }) {
   const Icon = TYPE_ICON[event.type]
+
+  if (event.type === 'private') {
+    return (
+      <li className={styles.item}>
+        <div className={styles.iconColumn}>
+          <span className={styles.iconBadge} style={{ backgroundColor: TYPE_COLOR.private }}>
+            <Icon size={14} color="#ffffff" aria-hidden />
+          </span>
+        </div>
+
+        <div className={`${styles.content} ${styles.privateRow}`}>
+          <p className={styles.summary}>{event.summary}</p>
+          <span className={styles.dateRange}>{currentMonthDateRange()}</span>
+        </div>
+      </li>
+    )
+  }
 
   return (
     <li className={styles.item}>

@@ -1,32 +1,8 @@
 import type { ContributionCalendar, ContributionDay, ContributionLevel, ContributionWeek } from '../types/contributions'
+import { hashString, mulberry32 } from './random'
 
 const DAYS_IN_RANGE = 371 // ~53 weeks, matching GitHub's own calendar span
 const MS_PER_DAY = 24 * 60 * 60 * 1000
-
-/**
- * Small, dependency-free seeded PRNG (mulberry32). Seeding from the
- * username means the generated calendar is stable across reloads for the
- * same profile, instead of reshuffling on every render.
- */
-function mulberry32(seed: number): () => number {
-  let state = seed
-  return () => {
-    state |= 0
-    state = (state + 0x6d2b79f5) | 0
-    let t = Math.imul(state ^ (state >>> 15), 1 | state)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-function hashString(value: string): number {
-  let hash = 0
-  for (let i = 0; i < value.length; i += 1) {
-    hash = (hash << 5) - hash + value.charCodeAt(i)
-    hash |= 0
-  }
-  return hash
-}
 
 /**
  * Formats a date as YYYY-MM-DD using its *local* components. `toISOString()`

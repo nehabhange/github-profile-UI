@@ -26,3 +26,10 @@ export function formatShortDate(isoDate: string): string {
   const date = new Date(year, month - 1, day)
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
+
+/** "Sep 3 – Sep 21" — the 1st of the current month through today, computed live so it never goes stale. */
+export function currentMonthDateRange(referenceDate = new Date()): string {
+  const start = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1)
+  const fmt = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return `${fmt(start)} – ${fmt(referenceDate)}`
+}

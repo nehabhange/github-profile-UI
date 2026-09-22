@@ -51,3 +51,30 @@ const DEFAULT_LANGUAGE_COLOR = '#8a8a8a'
 export function getLanguageColor(language: string): string {
   return LANGUAGE_COLORS[language] ?? DEFAULT_LANGUAGE_COLOR
 }
+
+export interface ContributedToSummary {
+  /** Repos to render as links, in order. */
+  shown: GitHubRepository[]
+  /** e.g. "12 other repositories" — null when every repo is already shown. */
+  remainingLabel: string | null
+}
+
+/**
+ * Picks which repos to link in the "Contributed to X, Y, Z and N other
+ * repositories" line and phrases the trailing count, matching the real
+ * GitHub Activity overview widget's copy (no Oxford comma before "and").
+ * Returns structured data rather than a string so the component can render
+ * each repo name as a real link.
+ */
+export function buildContributedToSummary(
+  repos: GitHubRepository[],
+  total: number,
+): ContributedToSummary {
+  const shown = repos.slice(0, 3)
+  const remaining = total - shown.length
+
+  if (remaining <= 0) return { shown, remainingLabel: null }
+
+  const noun = remaining === 1 ? 'repository' : 'repositories'
+  return { shown, remainingLabel: `${remaining} other ${noun}` }
+}

@@ -80,14 +80,25 @@ export default function ContributionGraph({ username }: ContributionGraphProps) 
         />
       </div>
 
-      <div className={styles.legend}>
-        <span>Less</span>
-        <span className={`${styles.swatch} ${styles.level0}`} aria-hidden />
-        <span className={`${styles.swatch} ${styles.level1}`} aria-hidden />
-        <span className={`${styles.swatch} ${styles.level2}`} aria-hidden />
-        <span className={`${styles.swatch} ${styles.level3}`} aria-hidden />
-        <span className={`${styles.swatch} ${styles.level4}`} aria-hidden />
-        <span>More</span>
+      <div className={styles.footer}>
+        <a
+          href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-graphs-on-your-profile/why-are-my-contributions-not-showing-up-on-my-profile"
+          target="_blank"
+          rel="noreferrer noopener"
+          className={styles.helpLink}
+        >
+          Learn how we count contributions
+        </a>
+
+        <div className={styles.legend}>
+          <span>Less</span>
+          <span className={`${styles.swatch} ${styles.level0}`} aria-hidden />
+          <span className={`${styles.swatch} ${styles.level1}`} aria-hidden />
+          <span className={`${styles.swatch} ${styles.level2}`} aria-hidden />
+          <span className={`${styles.swatch} ${styles.level3}`} aria-hidden />
+          <span className={`${styles.swatch} ${styles.level4}`} aria-hidden />
+          <span>More</span>
+        </div>
       </div>
     </section>
   )

@@ -46,7 +46,7 @@ export const MOCK_ORGANIZATIONS: Organization[] = [
  * relative to today so the timeline always reads as current instead of
  * drifting to a fixed past date.
  */
-export type ActivityType = 'commit' | 'pull-request' | 'review' | 'repository'
+export type ActivityType = 'commit' | 'pull-request' | 'review' | 'repository' | 'private'
 
 export interface ActivityEvent {
   id: string
@@ -54,9 +54,23 @@ export interface ActivityEvent {
   summary: string
   repositories: string[]
   monthsAgo: number
+  /** Only for `type: 'private'` — contribution count in private repos this month. */
+  privateCount?: number
 }
 
 export const MOCK_ACTIVITY: ActivityEvent[] = [
+  // The real page shows a locked "N contributions in private repositories"
+  // row for the current month, with a date range next to it — see
+  // ContributionActivity.tsx, which computes that range live rather than
+  // storing a date that would go stale.
+  {
+    id: 'act-private',
+    type: 'private',
+    summary: '17 contributions in private repositories',
+    repositories: [],
+    monthsAgo: 0,
+    privateCount: 17,
+  },
   {
     id: 'act-1',
     type: 'pull-request',
@@ -98,5 +112,26 @@ export const MOCK_ACTIVITY: ActivityEvent[] = [
     summary: 'Opened 1 pull request in 1 repository',
     repositories: ['Complete-Python-3-Bootcamp'],
     monthsAgo: 3,
+  },
+]
+
+/**
+ * Two additional, older months revealed only via the "Show more activity"
+ * button (matches the real page's progressive-disclosure pattern).
+ */
+export const MOCK_ACTIVITY_MORE: ActivityEvent[] = [
+  {
+    id: 'act-7',
+    type: 'commit',
+    summary: 'Created 5 commits in 1 repository',
+    repositories: ['node-opcua-logger'],
+    monthsAgo: 4,
+  },
+  {
+    id: 'act-8',
+    type: 'repository',
+    summary: 'Created 1 repository',
+    repositories: ['flutter_login_ui'],
+    monthsAgo: 5,
   },
 ]

@@ -9,14 +9,16 @@ import ProfileSidebar from '../../components/ProfileSidebar/ProfileSidebar'
 import PopularRepositories from '../../components/PopularRepositories/PopularRepositories'
 import ContributionGraphSkeleton from '../../components/ContributionGraph/ContributionGraphSkeleton'
 import ContributionActivity from '../../components/ContributionActivity/ContributionActivity'
+import ActivityOverviewSkeleton from '../../components/ActivityOverview/ActivityOverviewSkeleton'
 import Footer from '../../components/Footer/Footer'
 import { useGitHubProfile } from '../../hooks/useGitHubProfile'
 import styles from './ProfilePage.module.css'
 
 // ECharts pulls in a sizeable chunk (~650KB) — load it only when the
-// Overview tab actually needs to render the contribution graph, instead of
-// bundling it into the initial page load.
+// Overview tab actually needs to render a chart, instead of bundling it
+// into the initial page load.
 const ContributionGraph = lazy(() => import('../../components/ContributionGraph/ContributionGraph'))
+const ActivityOverview = lazy(() => import('../../components/ActivityOverview/ActivityOverview'))
 
 const USERNAME = 'shreeramk'
 
@@ -53,6 +55,9 @@ export default function ProfilePage() {
               <PopularRepositories username={USERNAME} />
               <Suspense fallback={<ContributionGraphSkeleton />}>
                 <ContributionGraph username={USERNAME} />
+              </Suspense>
+              <Suspense fallback={<ActivityOverviewSkeleton />}>
+                <ActivityOverview username={USERNAME} />
               </Suspense>
               <ContributionActivity />
             </>

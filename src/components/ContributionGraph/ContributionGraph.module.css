@@ -43,14 +43,26 @@
   }
 }
 
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.helpLink {
+  color: var(--color-fg-muted);
+}
+
 .legend {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
-  margin-top: 8px;
   color: var(--color-fg-muted);
-  font-size: 12px;
 }
 
 .swatch {
